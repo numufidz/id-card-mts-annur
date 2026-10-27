@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
@@ -47,7 +47,7 @@ button:focus-visible,select:focus-visible,.fb:focus-within{outline:3px solid var
 #lp{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--surface)}
 #q{font:inherit;margin:10px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
 details{margin:0 10px 6px;background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:6px 10px;font-size:.78rem}
-details ul{margin:4px 0 0;padding-left:16px;max-height:120px;overflow:auto}
+details ul{margin:4px 0 0;padding-left:16px;max-height:120px;overflow:auto}details ul a.wlink{color:var(--warn);font-weight:600;text-decoration:underline dotted;cursor:pointer}details ul a.wlink:hover{text-decoration:underline;opacity:.75}
 #list{flex:1;overflow:auto;padding:0 6px 8px}
 #empty{margin:20px 14px;color:var(--muted);font-size:.85rem}
 .r{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;border-radius:8px;padding:5px 6px;background:none;color:var(--ink);font-weight:400}
@@ -283,7 +283,7 @@ function build(){
   if(students.length){const names=new Set(students.map(s=>key(s.nama)));Object.keys(photos).forEach(k=>{if(!names.has(k))w.push('Foto tanpa data siswa: '+k);});}
   $('wd').hidden=!w.length;$('ws').textContent=w.length+' peringatan';
   const ul=$('wl');ul.textContent='';
-  w.forEach(t=>{const li=document.createElement('li');li.textContent=t;ul.append(li);});
+  w.forEach(t=>{const li=document.createElement('li');if(t.startsWith('Foto tidak ditemukan: ')){const nama=t.slice('Foto tidak ditemukan: '.length);const idx=students.findIndex(s=>s.nama===nama);const a=document.createElement('a');a.className='wlink';a.title='Klik untuk melihat '+nama;a.textContent=t;a.href='#';a.addEventListener('click',function(e){e.preventDefault();if(idx>=0){const q=document.getElementById('q');q.value='';renderList();pick(idx);document.getElementById('wd').open=false;}});li.append(a);}else{li.textContent=t;}ul.append(li);});
   sel=students.length?0:-1;
   renderList();
   const a=[students.length>0,np>0,students.length>0&&np>0];
